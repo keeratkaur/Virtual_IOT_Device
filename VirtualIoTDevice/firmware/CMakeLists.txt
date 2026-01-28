@@ -6,8 +6,11 @@ set(CMAKE_CXX_STANDARD 17)
 add_executable(firmware
     main.cpp
     app/device_manager.cpp
+    app/logger.cpp
     drivers/temp_sensor.cpp
     hal/hal_time.cpp
+    hal/hal_uart.cpp
+    hal/hal_cloud.cpp
 )
 
 # Allow includes like "drivers/temp_sensor.h" from any translation unit.

@@ -1,5 +1,5 @@
 #include "device_manager.h"
-#include <iostream>
+#include "app/logger.h"
 
 void DeviceManager::init() {
     temp_sensor_.init();
@@ -7,6 +7,7 @@ void DeviceManager::init() {
 
 void DeviceManager::run() {
     float temp = temp_sensor_.read_temperature();
-    std::cout << "[FW] Temperature: " << temp << " C" << std::endl;
+
+    LOG_INFO("[FW] Temperature: %0.1f C", temp);
 }
 
