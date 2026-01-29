@@ -33,3 +33,12 @@ UART-based logging and abstraction layer:
 - All firmware logs now go through `Logger` → `HAL_UART`, not `std::cout`.
 - Stubbed `HAL_Cloud` so logs can later be forwarded to a simulated socket / cloud client.
 - Added optional loop control (compile-time constant in `main.cpp`) to allow finite-run tests.
+
+## Step 3 – Simulated Network / Cloud Telemetry
+
+The virtual device now “talks” to a simulated backend:
+
+- Added `HAL_Network` (`hal_network.h/.cpp`) as a simple network HAL.
+- `HAL_Network::send(const char* message)` currently prints `[NET] ...` to stdout to simulate a backend.
+- `DeviceManager` keeps logging locally via `Logger` (UART) **and** forwards JSON telemetry over `HAL_Network`, e.g.:
+  - `{"device_id":"VIRT001","temp":22.34}`

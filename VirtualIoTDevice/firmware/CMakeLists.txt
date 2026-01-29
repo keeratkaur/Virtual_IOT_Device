@@ -9,6 +9,7 @@ add_executable(firmware
     app/logger.cpp
     drivers/temp_sensor.cpp
     hal/hal_time.cpp
+    hal/hal_network.cpp
     hal/hal_uart.cpp
     hal/hal_cloud.cpp
 )
