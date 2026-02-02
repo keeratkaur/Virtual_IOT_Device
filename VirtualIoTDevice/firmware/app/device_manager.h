@@ -6,7 +6,8 @@ class DeviceManager {
 public:
     DeviceManager(const std::string& device_id);
     void init();
-    void run();
+    const std::string& device_id() const;
+    float read_temperature_c();
 
 private:
     std::string device_id_;

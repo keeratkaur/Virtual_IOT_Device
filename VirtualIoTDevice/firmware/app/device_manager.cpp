@@ -1,14 +1,4 @@
 #include "device_manager.h"
-#include "app/logger.h"
-#include "hal/hal_network.h"
-
-#include <cstdio>
-
-namespace {
-    // Simple monotonically increasing timestamp used for simulated
-    // network telemetry. One tick per call to DeviceManager::run().
-    unsigned int g_timestamp = 0;
-}
 
 DeviceManager::DeviceManager(const std::string& device_id)
     : device_id_(device_id),
@@ -33,33 +23,11 @@ void DeviceManager::init() {
     temp_sensor_.init();
 }
 
-void DeviceManager::run() {
-    float temp = temp_sensor_.read_temperature() + temp_offset_;
+const std::string& DeviceManager::device_id() const {
+    return device_id_;
+}
 
-    // Determine status and log level based on temperature.
-    const char* status;
-    if (temp > 35.0f) {
-        LOG_ERROR("[%s] Overheat: %0.1f C", device_id_.c_str(), temp);
-        status = "error";
-    } else if (temp > 30.0f) {
-        LOG_WARN("[%s] High temperature: %0.1f C", device_id_.c_str(), temp);
-        status = "warning";
-    } else {
-        LOG_INFO("[%s] Temperature: %0.1f C", device_id_.c_str(), temp);
-        status = "normal";
-    }
-
-    // Forward telemetry over the simulated network as JSON with status.
-    ++g_timestamp;
-
-    char buf[200];
-    std::snprintf(buf, sizeof(buf),
-                  "{\"device_id\":\"%s\",\"temp\":%.2f,\"timestamp\":%u,\"status\":\"%s\"}",
-                  device_id_.c_str(),
-                  temp,
-                  g_timestamp,
-                  status);
-
-    HAL_Network::send(buf);
+float DeviceManager::read_temperature_c() {
+    return temp_sensor_.read_temperature() + temp_offset_;
 }
 
