@@ -7,12 +7,17 @@ add_executable(firmware
     main.cpp
     app/device_manager.cpp
     app/logger.cpp
+    app/telemetry_queue.cpp
     drivers/temp_sensor.cpp
     hal/hal_time.cpp
+    hal/hal_network.cpp
     hal/hal_uart.cpp
     hal/hal_cloud.cpp
 )
 
 # Allow includes like "drivers/temp_sensor.h" from any translation unit.
 target_include_directories(firmware PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
+find_package(Threads REQUIRED)
+target_link_libraries(firmware PRIVATE Threads::Threads)
 
